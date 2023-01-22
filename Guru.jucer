@@ -6,6 +6,28 @@
               companyWebsite="blog.cornbeast.com" companyEmail="cornbeast@cornbeast.com">
   <MAINGROUP id="YXA7t4" name="Guru">
     <GROUP id="{A63BFC43-363C-390F-7C85-4EA32449EB0E}" name="Source">
+      <FILE id="B3WeK8" name="MoogSlimPhatty.cpp" compile="1" resource="0"
+            file="Source/MoogSlimPhatty.cpp"/>
+      <FILE id="tudAig" name="MoogSlimPhatty.h" compile="0" resource="0"
+            file="Source/MoogSlimPhatty.h"/>
+      <FILE id="MJolIe" name="SynthDefinitionBase.cpp" compile="1" resource="0"
+            file="Source/SynthDefinitionBase.cpp"/>
+      <FILE id="swDr0l" name="SynthDefinitionBase.h" compile="0" resource="0"
+            file="Source/SynthDefinitionBase.h"/>
+      <FILE id="iuzULd" name="SynthParameterSection.cpp" compile="1" resource="0"
+            file="Source/SynthParameterSection.cpp"/>
+      <FILE id="ueBDfm" name="SynthParameterSection.h" compile="0" resource="0"
+            file="Source/SynthParameterSection.h"/>
+      <FILE id="iHPhgQ" name="SynthParameterGroup.cpp" compile="1" resource="0"
+            file="Source/SynthParameterGroup.cpp"/>
+      <FILE id="u1aJuo" name="SynthParameterGroup.h" compile="0" resource="0"
+            file="Source/SynthParameterGroup.h"/>
+      <FILE id="CFUg1S" name="SynthParameter.cpp" compile="1" resource="0"
+            file="Source/SynthParameter.cpp"/>
+      <FILE id="oKHy9I" name="SynthParameter.h" compile="0" resource="0"
+            file="Source/SynthParameter.h"/>
+      <FILE id="wrhMYa" name="Midi.cpp" compile="1" resource="0" file="Source/Midi.cpp"/>
+      <FILE id="MHHh2N" name="Midi.h" compile="0" resource="0" file="Source/Midi.h"/>
       <FILE id="GB4lEq" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="UdCobz" name="PluginProcessor.h" compile="0" resource="0"

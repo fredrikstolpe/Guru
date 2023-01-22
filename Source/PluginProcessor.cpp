@@ -147,6 +147,24 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
                 (juce::uint8)noteOnVel);
         }
 
+        if (message.isController())
+        {
+            int cc = message.getControllerNumber();
+            switch (cc)
+            {
+                case 14:
+                    cc = 9;
+                case 15:
+                    cc = 74;
+                case 82:
+                    cc = 77;
+                case 19:
+                    cc = 11;
+                case 22:
+                    cc = 75;
+            }
+            message = juce::MidiMessage::controllerEvent(message.getChannel(), cc, message.getControllerValue());
+        }
         processedMidi.addEvent(message, time);
     }
 

@@ -24,6 +24,7 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    void monitorMessage(juce::String);
 
 private:
     void sliderValueChanged(juce::Slider* slider) override; // [3]
@@ -32,6 +33,7 @@ private:
     // access the processor object that created it.
     Guru2AudioProcessor& audioProcessor;
 
+    juce::TextEditor midiMonitor{ "MIDI Monitor" };
     juce::Slider midiVolume; // [1]
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Guru2AudioProcessorEditor)
