@@ -15,16 +15,18 @@ Guru2AudioProcessorEditor::Guru2AudioProcessorEditor (Guru2AudioProcessor& p)
 {
     setSize(732, 520);
 
-    // these define the parameters of our slider object
-    midiVolume.setSliderStyle(juce::Slider::LinearBarVertical);
-    midiVolume.setRange(0.0, 127.0, 1.0);
-    midiVolume.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 0);
-    midiVolume.setPopupDisplayEnabled(true, false, this);
-    midiVolume.setTextValueSuffix(" Volume");
-    midiVolume.setValue(1.0);
+    startTimer(5000);
 
-    addAndMakeVisible(&midiVolume);
-    midiVolume.addListener(this);
+    // these define the parameters of our slider object
+    //midiVolume.setSliderStyle(juce::Slider::LinearBarVertical);
+    //midiVolume.setRange(0.0, 127.0, 1.0);
+    //midiVolume.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 90, 0);
+    //midiVolume.setPopupDisplayEnabled(true, false, this);
+    //midiVolume.setTextValueSuffix(" Volume");
+    //midiVolume.setValue(1.0);
+
+    //addAndMakeVisible(&midiVolume);
+    //midiVolume.addListener(this);
 
     midiMonitor.setMultiLine(true);
     midiMonitor.setReturnKeyStartsNewLine(false);
@@ -73,6 +75,16 @@ void Guru2AudioProcessorEditor::resized()
     midiVolume.setBounds(40, 30, 20, getHeight() - 60);
     midiMonitor.setBounds(margin, y,
         getWidth() - (2 * margin), getHeight() - y - margin);
+}
+
+Guru2AudioProcessor& Guru2AudioProcessorEditor::getProcessor()
+{
+    return static_cast<Guru2AudioProcessor&> (audioProcessor);
+}
+
+void Guru2AudioProcessorEditor::timerCallback()
+{
+    monitorMessage(getProcessor().lastValue);
 }
 
 void Guru2AudioProcessorEditor::monitorMessage(juce::String message)

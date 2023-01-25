@@ -13,7 +13,8 @@
 //==============================================================================
 /**
 */
-class Guru2AudioProcessor  : public juce::AudioProcessor
+class Guru2AudioProcessor  : public juce::AudioProcessor,
+                                public juce::AudioProcessorValueTreeState::Listener
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
@@ -57,6 +58,12 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
     float noteOnVel;
+
+    juce::String lastValue;
+
+    juce::AudioProcessorValueTreeState treeState;
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
 private:
     //==============================================================================

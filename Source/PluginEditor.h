@@ -15,7 +15,8 @@
 /**
 */
 class Guru2AudioProcessorEditor  : public juce::AudioProcessorEditor,
-    private juce::Slider::Listener     // [2]
+    private juce::Slider::Listener,
+    private juce::Timer
 {
 public:
     Guru2AudioProcessorEditor (Guru2AudioProcessor&);
@@ -24,6 +25,8 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
+    Guru2AudioProcessor& getProcessor();
+    void timerCallback() override;
     void monitorMessage(juce::String);
 
 private:

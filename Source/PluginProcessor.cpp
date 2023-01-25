@@ -9,6 +9,9 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#define CUTOFF_ID "cutoff"
+#define CUTOFF_NAME "VCF Cutoff"
+
 //==============================================================================
 Guru2AudioProcessor::Guru2AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -19,9 +22,13 @@ Guru2AudioProcessor::Guru2AudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+    treeState(*this, nullptr)
 #endif
 {
+    juce::NormalisableRange<float> cutoffRange (0.0, 127.0, 1);
+    treeState.createAndAddParameter(CUTOFF_ID, CUTOFF_NAME, CUTOFF_NAME, cutoffRange, 1, nullptr, nullptr);
+    lastValue = "Hello";
 }
 
 Guru2AudioProcessor::~Guru2AudioProcessor()
@@ -169,6 +176,14 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     }
 
     midiMessages.swapWith(processedMidi);
+}
+
+void Guru2AudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    if (parameterID == CUTOFF_ID)
+    {
+        lastValue = "Cutoff";
+    }
 }
 
 //==============================================================================
