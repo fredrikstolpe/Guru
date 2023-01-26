@@ -89,7 +89,7 @@ void Guru2AudioProcessorEditor::timerCallback()
 
 void Guru2AudioProcessorEditor::monitorMessage(juce::String message)
 {
-    midiMonitor.insertTextAtCaret(message);
+    midiMonitor.insertTextAtCaret(message + "\n");
 }
 
 //void handleNoteOn(MidiKeyboardState*, int midiChannel, int midiNoteNumber, float velocity) override

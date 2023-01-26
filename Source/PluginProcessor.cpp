@@ -30,6 +30,7 @@ Guru2AudioProcessor::Guru2AudioProcessor()
     treeState.createAndAddParameter(CUTOFF_ID, CUTOFF_NAME, CUTOFF_NAME, cutoffRange, 1, nullptr, nullptr);
     treeState.addParameterListener(CUTOFF_ID, this);*/
     treeState.addParameterListener("CUTOFF", this);
+    treeState.addParameterListener("RESONANCE", this);
     lastValue = "";
 }
 
@@ -186,6 +187,11 @@ void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, flo
     {
         lastValue = "Cutoff: " + std::to_string(newValue);
     }
+    if (parameterID == "RESONANCE")
+    {
+        int x = static_cast<int>(newValue);
+        lastValue = "Resonance: " + std::to_string(x);
+    }
 }
 
 //==============================================================================
@@ -217,6 +223,7 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
     params.push_back(std::make_unique<juce::AudioParameterFloat>("CUTOFF", "Cutoff", 0.0f, 128.0f, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("RESONANCE", "Resonance", 0, 128, 0));
     return { params.begin(), params.end() };
         //AudioParameterFloat(const ParameterID & parameterID, const String & parameterName, float minValue, float maxValue, float defaultValue)
         //AudioParameterInt(const ParameterID & parameterID, const String & parameterName, int minValue, int maxValue, int defaultValue, const AudioParameterIntAttributes & attributes = {})
