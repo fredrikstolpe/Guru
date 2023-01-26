@@ -23,9 +23,14 @@ Guru2AudioProcessor::Guru2AudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-    treeState(*this, nullptr, "Parameters", createParameters())
+    treeState(*this, nullptr)
+    //treeState(*this, nullptr, "Parameters", createParameters())
 #endif
 {
+    treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
+    //treeState(*this, nullptr, "Parameters", createParameters())
+    //juce::AudioProcessorValueTreeState::ParameterLayout p = createParameters();
+    
     /*juce::NormalisableRange<float> cutoffRange (0.0, 127.0, 1);
     treeState.createAndAddParameter(CUTOFF_ID, CUTOFF_NAME, CUTOFF_NAME, cutoffRange, 1, nullptr, nullptr);
     treeState.addParameterListener(CUTOFF_ID, this);*/
@@ -222,11 +227,9 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 
 juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
     std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-    params.push_back(std::make_unique<juce::AudioParameterFloat>("CUTOFF", "Cutoff", 0.0f, 128.0f, 0.0f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
     params.push_back(std::make_unique<juce::AudioParameterInt>("RESONANCE", "Resonance", 0, 128, 0));
     return { params.begin(), params.end() };
-        //AudioParameterFloat(const ParameterID & parameterID, const String & parameterName, float minValue, float maxValue, float defaultValue)
-        //AudioParameterInt(const ParameterID & parameterID, const String & parameterName, int minValue, int maxValue, int defaultValue, const AudioParameterIntAttributes & attributes = {})
 }
 
 //==============================================================================
