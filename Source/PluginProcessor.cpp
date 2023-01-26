@@ -23,11 +23,13 @@ Guru2AudioProcessor::Guru2AudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-    treeState(*this, nullptr)
+    treeState(*this, nullptr, "Parameters", createParameters())
 #endif
 {
-    juce::NormalisableRange<float> cutoffRange (0.0, 127.0, 1);
+    /*juce::NormalisableRange<float> cutoffRange (0.0, 127.0, 1);
     treeState.createAndAddParameter(CUTOFF_ID, CUTOFF_NAME, CUTOFF_NAME, cutoffRange, 1, nullptr, nullptr);
+    treeState.addParameterListener(CUTOFF_ID, this);*/
+    treeState.addParameterListener("CUTOFF", this);
     lastValue = "Hello";
 }
 
@@ -178,9 +180,10 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     midiMessages.swapWith(processedMidi);
 }
 
-void Guru2AudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+void Guru2AudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 {
-    if (parameterID == CUTOFF_ID)
+    lastValue = parameterID;
+    if (parameterID == "CUTOFF")
     {
         lastValue = "Cutoff";
     }
@@ -209,6 +212,15 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+
+juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    params.push_back(std::make_unique<juce::AudioParameterFloat>("CUTOFF", "Cutoff", 0.0f, 128.0f, 0.0f));
+    return { params.begin(), params.end() };
+        //AudioParameterFloat(const ParameterID & parameterID, const String & parameterName, float minValue, float maxValue, float defaultValue)
+        //AudioParameterInt(const ParameterID & parameterID, const String & parameterName, int minValue, int maxValue, int defaultValue, const AudioParameterIntAttributes & attributes = {})
 }
 
 //==============================================================================
