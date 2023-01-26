@@ -31,6 +31,7 @@ Guru2AudioProcessor::Guru2AudioProcessor()
     treeState.addParameterListener(CUTOFF_ID, this);*/
     treeState.addParameterListener("CUTOFF", this);
     lastValue = "Hello";
+    lastValue = "Goodbye";
 }
 
 Guru2AudioProcessor::~Guru2AudioProcessor()
@@ -180,8 +181,9 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
     midiMessages.swapWith(processedMidi);
 }
 
-void Guru2AudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
+void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
+    lastValue = "Morning";
     lastValue = parameterID;
     if (parameterID == "CUTOFF")
     {

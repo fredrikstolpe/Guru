@@ -63,7 +63,7 @@ public:
 
     juce::AudioProcessorValueTreeState treeState;
 
-    void parameterChanged(const juce::String& parameterID, float newValue) override;
+    void parameterChanged(const juce::String &parameterID, float newValue) override;
 
 private:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
