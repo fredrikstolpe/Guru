@@ -27,7 +27,6 @@ Guru2AudioProcessor::Guru2AudioProcessor()
     treeState(*this, nullptr)
 #endif
 {
-    parameters = createParameters();
     parameterDict = createParameterDict();
 
     std::map<juce::String, SynthParameter*>::iterator it;
@@ -37,12 +36,6 @@ Guru2AudioProcessor::Guru2AudioProcessor()
         treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(it->first, it->second->name, it->second->minValue, it->second->maxValue, it->second->defaultValue));
         treeState.addParameterListener(it->first, this);
     }
-
-    //for (SynthParameter parameter : parameters)
-    //{
-    //    treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(parameter.id, parameter.name, parameter.minValue, parameter.maxValue, parameter.defaultValue));
-    //    treeState.addParameterListener(parameter.id, this);
-    //}
 
     lastValue = "";
 }
@@ -197,7 +190,7 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
     int x = static_cast<int>(newValue);
-    lastValue = parameterID + " : " + std::to_string(x);
+    lastValue = parameterID + " : " + std::to_string(x) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
 }
 
 //==============================================================================
@@ -225,22 +218,11 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
     // whose contents will have been created by the getStateInformation() call.
 }
 
-std::vector<SynthParameter> Guru2AudioProcessor::createParameters() {
-    std::vector<SynthParameter> params;
-
-    params.push_back(SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100));
-    params.push_back(SynthParameter("LPF_RESONANCE", "Resonance", CC, 101));
-    
-    return params;
-}
-
 std::map<juce::String, SynthParameter*> Guru2AudioProcessor::createParameterDict() {
     std::map<juce::String, SynthParameter*> dict;
 
     dict.insert(std::make_pair("LPF_CUTOFF", new SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100)));
-
-    /*dict["LPF_CUTOFF"] = &SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100);
-    dict["LPF_RESONANCE"] = &SynthParameter("LPF_RESONANCE", "Resonance", CC, 101);*/
+    dict.insert(std::make_pair("LPF_RESONANCE", new SynthParameter("LPF_RESONANCE", "Resonance", CC, 101)));
 
     return dict;
 }

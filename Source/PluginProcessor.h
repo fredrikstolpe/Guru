@@ -66,11 +66,9 @@ public:
 
     void parameterChanged(const juce::String &parameterID, float newValue) override;
 
-    std::vector<SynthParameter> parameters;
     std::map<juce::String, SynthParameter*> parameterDict;
 
 private:
-    std::vector<SynthParameter> createParameters();
     std::map<juce::String, SynthParameter*> createParameterDict();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Guru2AudioProcessor)
