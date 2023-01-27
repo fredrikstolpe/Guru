@@ -8,10 +8,8 @@
               pluginManufacturerCode="Sdec" pluginCode="Guru" pluginAUMainType="'aufx'">
   <MAINGROUP id="YXA7t4" name="Guru">
     <GROUP id="{A63BFC43-363C-390F-7C85-4EA32449EB0E}" name="Source">
-      <FILE id="q7btoA" name="CutoffParameterListener.cpp" compile="1" resource="0"
-            file="Source/CutoffParameterListener.cpp"/>
-      <FILE id="xBV4l5" name="CutoffParameterListener.h" compile="0" resource="0"
-            file="Source/CutoffParameterListener.h"/>
+      <FILE id="P64gEL" name="MidiParameterType.h" compile="0" resource="0"
+            file="Source/MidiParameterType.h"/>
       <FILE id="B3WeK8" name="MoogSlimPhatty.cpp" compile="1" resource="0"
             file="Source/MoogSlimPhatty.cpp"/>
       <FILE id="tudAig" name="MoogSlimPhatty.h" compile="0" resource="0"

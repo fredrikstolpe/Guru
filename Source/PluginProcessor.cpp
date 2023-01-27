@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "SynthParameter.h"
 
 #define CUTOFF_ID "cutoff"
 #define CUTOFF_NAME "VCF Cutoff"
@@ -27,15 +28,14 @@ Guru2AudioProcessor::Guru2AudioProcessor()
     //treeState(*this, nullptr, "Parameters", createParameters())
 #endif
 {
-    treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
-    //treeState(*this, nullptr, "Parameters", createParameters())
-    //juce::AudioProcessorValueTreeState::ParameterLayout p = createParameters();
-    
-    /*juce::NormalisableRange<float> cutoffRange (0.0, 127.0, 1);
-    treeState.createAndAddParameter(CUTOFF_ID, CUTOFF_NAME, CUTOFF_NAME, cutoffRange, 1, nullptr, nullptr);
-    treeState.addParameterListener(CUTOFF_ID, this);*/
-    treeState.addParameterListener("CUTOFF", this);
-    treeState.addParameterListener("RESONANCE", this);
+    std::vector<SynthParameter> parameters = createParameters();
+
+    for (SynthParameter parameter : parameters)
+    {
+        treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(parameter.id, parameter.name, parameter.minValue, parameter.maxValue, parameter.defaultValue));
+        treeState.addParameterListener(parameter.id, this);
+    }
+
     lastValue = "";
 }
 
@@ -188,15 +188,8 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 
 void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
-    if (parameterID == "CUTOFF")
-    {
-        lastValue = "Cutoff: " + std::to_string(newValue);
-    }
-    if (parameterID == "RESONANCE")
-    {
-        int x = static_cast<int>(newValue);
-        lastValue = "Resonance: " + std::to_string(x);
-    }
+    int x = static_cast<int>(newValue);
+    lastValue = parameterID + " : " + std::to_string(x);
 }
 
 //==============================================================================
@@ -225,11 +218,18 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 }
 
 
-juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
-    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-    params.push_back(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
-    params.push_back(std::make_unique<juce::AudioParameterInt>("RESONANCE", "Resonance", 0, 128, 0));
-    return { params.begin(), params.end() };
+//juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
+//    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+//    params.push_back(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
+//    params.push_back(std::make_unique<juce::AudioParameterInt>("RESONANCE", "Resonance", 0, 128, 0));
+//    return { params.begin(), params.end() };
+//}
+
+std::vector<SynthParameter> Guru2AudioProcessor::createParameters() {
+    std::vector<SynthParameter> params;
+    params.push_back(SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100));
+    params.push_back(SynthParameter("LPF_RESONANCE", "Resonance", CC, 101));
+    return params;
 }
 
 //==============================================================================

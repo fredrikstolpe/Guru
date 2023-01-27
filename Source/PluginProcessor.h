@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "SynthParameter.h"
 
 //==============================================================================
 /**
@@ -66,7 +67,8 @@ public:
     void parameterChanged(const juce::String &parameterID, float newValue) override;
 
 private:
-    juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    //juce::AudioProcessorValueTreeState::ParameterLayout createParameters();
+    std::vector<SynthParameter> createParameters();
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Guru2AudioProcessor)
 };

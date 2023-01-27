@@ -11,26 +11,17 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "MidiParameterType.h"
 
 class SynthParameter
 {
 public:
-    //Id
+    SynthParameter(juce::String id, juce::String name, MidiParameterType type, int ccNumber);
+    juce::String id;
     juce::String name;
-    //type; // "sysex", "cc", "nrpn", "pitchbend"
-    int number;
-    int lsbNumber;
-    int defaultValue;
+    MidiParameterType type;
+    int ccNumber;
     int minValue;
     int maxValue;
-    int displayMinValue;
-    int displayMaxValue;
-    int displayValueFactor = 1;
-    int randomizeMinValue;
-    int randomizeMaxValue;
-    //items;
-    //itemValues;
-    //guiType
-    juce::String sysexMessageTemplate;
-    //valueCallback ?
+    int defaultValue;
 };
