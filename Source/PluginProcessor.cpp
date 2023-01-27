@@ -25,16 +25,24 @@ Guru2AudioProcessor::Guru2AudioProcessor()
                      #endif
                        ),
     treeState(*this, nullptr)
-    //treeState(*this, nullptr, "Parameters", createParameters())
 #endif
 {
-    std::vector<SynthParameter> parameters = createParameters();
+    parameters = createParameters();
+    parameterDict = createParameterDict();
 
-    for (SynthParameter parameter : parameters)
+    std::map<juce::String, SynthParameter*>::iterator it;
+
+    for (it = parameterDict.begin(); it != parameterDict.end(); it++)
     {
-        treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(parameter.id, parameter.name, parameter.minValue, parameter.maxValue, parameter.defaultValue));
-        treeState.addParameterListener(parameter.id, this);
+        treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(it->first, it->second->name, it->second->minValue, it->second->maxValue, it->second->defaultValue));
+        treeState.addParameterListener(it->first, this);
     }
+
+    //for (SynthParameter parameter : parameters)
+    //{
+    //    treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(parameter.id, parameter.name, parameter.minValue, parameter.maxValue, parameter.defaultValue));
+    //    treeState.addParameterListener(parameter.id, this);
+    //}
 
     lastValue = "";
 }
@@ -217,20 +225,26 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
     // whose contents will have been created by the getStateInformation() call.
 }
 
-
-//juce::AudioProcessorValueTreeState::ParameterLayout Guru2AudioProcessor::createParameters() {
-//    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
-//    params.push_back(std::make_unique<juce::AudioParameterInt>("CUTOFF", "Cutoff", 0, 128, 0));
-//    params.push_back(std::make_unique<juce::AudioParameterInt>("RESONANCE", "Resonance", 0, 128, 0));
-//    return { params.begin(), params.end() };
-//}
-
 std::vector<SynthParameter> Guru2AudioProcessor::createParameters() {
     std::vector<SynthParameter> params;
+
     params.push_back(SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100));
     params.push_back(SynthParameter("LPF_RESONANCE", "Resonance", CC, 101));
+    
     return params;
 }
+
+std::map<juce::String, SynthParameter*> Guru2AudioProcessor::createParameterDict() {
+    std::map<juce::String, SynthParameter*> dict;
+
+    dict.insert(std::make_pair("LPF_CUTOFF", new SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100)));
+
+    /*dict["LPF_CUTOFF"] = &SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100);
+    dict["LPF_RESONANCE"] = &SynthParameter("LPF_RESONANCE", "Resonance", CC, 101);*/
+
+    return dict;
+}
+
 
 //==============================================================================
 // This creates new instances of the plugin..

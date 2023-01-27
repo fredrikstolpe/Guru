@@ -21,7 +21,7 @@ public:
     juce::String name;
     MidiParameterType type;
     int ccNumber;
-    int minValue;
-    int maxValue;
-    int defaultValue;
+    int minValue = 0;
+    int maxValue = 128;
+    int defaultValue = 0;
 };
