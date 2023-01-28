@@ -39,5 +39,11 @@ private:
     juce::TextEditor midiMonitor{ "MIDI Monitor" };
     juce::Slider midiVolume; // [1]
 
+    juce::Label textLabel{ {}, "The quick brown fox jumps over the lazy dog." };
+    juce::Font textFont{ 12.0f };
+    juce::ComboBox midiOutMenu;
+
+    void midiOutMenuChanaged();
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Guru2AudioProcessorEditor)
 };

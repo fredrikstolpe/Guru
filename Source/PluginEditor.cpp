@@ -13,9 +13,27 @@
 Guru2AudioProcessorEditor::Guru2AudioProcessorEditor (Guru2AudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p)
 {
-    setSize(732, 520);
+
 
     startTimer(5000);
+
+    auto availableMidiOutDevices = juce::MidiOutput::getAvailableDevices();
+
+    addAndMakeVisible(textLabel);
+    textLabel.setFont(textFont);
+
+    // add items to the combo-box
+    addAndMakeVisible(midiOutMenu);
+
+    int i = 0;
+    for (juce::MidiDeviceInfo& device : availableMidiOutDevices)
+    {
+        midiOutMenu.addItem(device.name, i);
+        i++;
+    }
+
+    midiOutMenu.onChange = [this] { midiOutMenuChanaged(); };
+    midiOutMenu.setSelectedId(1);
 
     // these define the parameters of our slider object
     //midiVolume.setSliderStyle(juce::Slider::LinearBarVertical);
@@ -36,11 +54,18 @@ Guru2AudioProcessorEditor::Guru2AudioProcessorEditor (Guru2AudioProcessor& p)
     midiMonitor.setPopupMenuEnabled(false);
     midiMonitor.setText({});
     addAndMakeVisible(&midiMonitor);
+
+    setSize(732, 520);
 }
 
 void Guru2AudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 {
     audioProcessor.noteOnVel = midiVolume.getValue();
+}
+
+void Guru2AudioProcessorEditor::midiOutMenuChanaged()
+{
+    //midiOutMenu.getSelectedId();
 }
 
 
@@ -75,6 +100,8 @@ void Guru2AudioProcessorEditor::resized()
     midiVolume.setBounds(40, 30, 20, getHeight() - 60);
     midiMonitor.setBounds(margin, y,
         getWidth() - (2 * margin), getHeight() - y - margin);
+    textLabel.setBounds(10, 10, getWidth() - 20, 20);
+    midiOutMenu.setBounds(10, 40, getWidth() - 20, 20);
 }
 
 Guru2AudioProcessor& Guru2AudioProcessorEditor::getProcessor()
