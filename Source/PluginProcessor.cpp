@@ -24,7 +24,8 @@ Guru2AudioProcessor::Guru2AudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-    treeState(*this, nullptr)
+    treeState(*this, nullptr),
+    startTime(juce::Time::getMillisecondCounterHiRes() * 0.001)
 #endif
 {
     parameterDict = createParameterDict();
@@ -192,7 +193,7 @@ void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, flo
     int ccValue = static_cast<int>(newValue);
     lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
     auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
-    //message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
+    message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
     addMessageToBuffer(message);
 }
 

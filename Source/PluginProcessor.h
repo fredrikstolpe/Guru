@@ -72,6 +72,8 @@ public:
 private:
     std::map<juce::String, SynthParameter*> createParameterDict();
 
+    double startTime;
+
     juce::MidiBuffer midiBuffer;
     double sampleRate = 44100.0;
     int previousSampleNumber = 0;
