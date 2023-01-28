@@ -167,6 +167,7 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         if (message.isController())
         {
             int cc = message.getControllerNumber();
+            lastValue = "CC " + static_cast<int>(cc);
             switch (cc)
             {
                 case 14:
@@ -191,7 +192,7 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
     int ccValue = static_cast<int>(newValue);
-    lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
+    //lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
     auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
     message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
     addMessageToBuffer(message);
