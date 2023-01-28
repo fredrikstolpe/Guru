@@ -30,10 +30,10 @@ Guru2AudioProcessor::Guru2AudioProcessor()
 {
     parameterDict = createParameterDict();
 
-    if (midiOutput.get() == nullptr)
-    {
-        midiOutput = juce::MidiOutput::openDevice(juce::MidiOutput::getDefaultDevice().identifier);
-    }
+    //if (midiOutput.get() == nullptr)
+    //{
+    //    midiOutput = juce::MidiOutput::openDevice(juce::MidiOutput::getDefaultDevice().identifier);
+    //}
 
     std::map<juce::String, SynthParameter*>::iterator it;
 
@@ -207,6 +207,11 @@ void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, flo
     /*auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
     message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
     addMessageToBuffer(message);*/
+}
+
+void Guru2AudioProcessor::changeMidiDevice(juce::String& identifier) {
+    lastValue = "Midi out:" + identifier;
+    midiOutput = juce::MidiOutput::openDevice(identifier);
 }
 
 //void Guru2AudioProcessor::addMessageToBuffer(const juce::MidiMessage& message)

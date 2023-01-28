@@ -67,6 +67,8 @@ public:
 
     void parameterChanged(const juce::String &parameterID, float newValue) override;
 
+    void changeMidiDevice(juce::String& identifier);
+
     std::map<juce::String, SynthParameter*> parameterDict;
 
 private:

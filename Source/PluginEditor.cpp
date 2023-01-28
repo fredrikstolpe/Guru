@@ -33,7 +33,8 @@ Guru2AudioProcessorEditor::Guru2AudioProcessorEditor (Guru2AudioProcessor& p)
     }
 
     midiOutMenu.onChange = [this] { midiOutMenuChanaged(); };
-    midiOutMenu.setSelectedId(1);
+    midiOutMenu.setSelectedId(0);
+    midiOutMenuChanaged();
 
     // these define the parameters of our slider object
     //midiVolume.setSliderStyle(juce::Slider::LinearBarVertical);
@@ -55,6 +56,7 @@ Guru2AudioProcessorEditor::Guru2AudioProcessorEditor (Guru2AudioProcessor& p)
     midiMonitor.setText({});
     addAndMakeVisible(&midiMonitor);
 
+
     setSize(732, 520);
 }
 
@@ -65,9 +67,17 @@ void Guru2AudioProcessorEditor::sliderValueChanged(juce::Slider* slider)
 
 void Guru2AudioProcessorEditor::midiOutMenuChanaged()
 {
-    //midiOutMenu.getSelectedId();
+    int id = midiOutMenu.getSelectedId();
+    auto availableMidiOutDevices = juce::MidiOutput::getAvailableDevices();
+    int i = 0;
+    for (juce::MidiDeviceInfo& device : availableMidiOutDevices)
+    {
+        if (i == id) {
+            audioProcessor.changeMidiDevice(device.identifier);
+        }
+        i++;
+    }
 }
-
 
 Guru2AudioProcessorEditor::~Guru2AudioProcessorEditor()
 {
