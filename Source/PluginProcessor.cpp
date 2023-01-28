@@ -30,6 +30,11 @@ Guru2AudioProcessor::Guru2AudioProcessor()
 {
     parameterDict = createParameterDict();
 
+    if (midiOutput.get() == nullptr)
+    {
+        midiOutput = juce::MidiOutput::openDevice(juce::MidiOutput::getDefaultDevice().identifier);
+    }
+
     std::map<juce::String, SynthParameter*>::iterator it;
 
     for (it = parameterDict.begin(); it != parameterDict.end(); it++)
@@ -167,7 +172,7 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
         if (message.isController())
         {
             int cc = message.getControllerNumber();
-            lastValue = "CC " + static_cast<int>(cc);
+            //lastValue = "CC " + static_cast<int>(cc);
             switch (cc)
             {
                 case 14:
@@ -192,18 +197,24 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
     int ccValue = static_cast<int>(newValue);
-    //lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
-    auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
+    lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
+    
+    if (midiOutput)
+    {
+        midiOutput->sendMessageNow(juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, ccValue));
+    }
+
+    /*auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
     message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
-    addMessageToBuffer(message);
+    addMessageToBuffer(message);*/
 }
 
-void Guru2AudioProcessor::addMessageToBuffer(const juce::MidiMessage& message)
-{
-    auto timestamp = message.getTimeStamp();
-    auto sampleNumber = (int)(timestamp * sampleRate);
-    midiBuffer.addEvent(message, sampleNumber);
-}
+//void Guru2AudioProcessor::addMessageToBuffer(const juce::MidiMessage& message)
+//{
+//    auto timestamp = message.getTimeStamp();
+//    auto sampleNumber = (int)(timestamp * sampleRate);
+//    midiBuffer.addEvent(message, sampleNumber);
+//}
 
 //==============================================================================
 bool Guru2AudioProcessor::hasEditor() const

@@ -74,6 +74,8 @@ private:
 
     double startTime;
 
+    std::unique_ptr<juce::MidiOutput> midiOutput;
+
     juce::MidiBuffer midiBuffer;
     double sampleRate = 44100.0;
     int previousSampleNumber = 0;
