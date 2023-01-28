@@ -10,10 +10,8 @@
 
 #include "SynthParameter.h"
 
-SynthParameter::SynthParameter(juce::String id, juce::String name, MidiParameterType type, int ccNumber)
+SynthParameter::SynthParameter(juce::String id, int ccNumber)
 {
     this->id = id;
-    this->name = name;
-    this->type = type;
     this->ccNumber = ccNumber;
 }

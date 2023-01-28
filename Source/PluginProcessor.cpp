@@ -39,7 +39,7 @@ Guru2AudioProcessor::Guru2AudioProcessor()
 
     for (it = parameterDict.begin(); it != parameterDict.end(); it++)
     {
-        treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(it->first, it->second->name, it->second->minValue, it->second->maxValue, it->second->defaultValue));
+        treeState.createAndAddParameter(std::make_unique<juce::AudioParameterInt>(it->first, it->second->id, it->second->minValue, it->second->maxValue, it->second->defaultValue));
         treeState.addParameterListener(it->first, this);
     }
 
@@ -249,8 +249,36 @@ void Guru2AudioProcessor::setStateInformation (const void* data, int sizeInBytes
 std::map<juce::String, SynthParameter*> Guru2AudioProcessor::createParameterDict() {
     std::map<juce::String, SynthParameter*> dict;
 
-    dict.insert(std::make_pair("LPF_CUTOFF", new SynthParameter("LPF_CUTOFF", "Cutoff", CC, 100)));
-    dict.insert(std::make_pair("LPF_RESONANCE", new SynthParameter("LPF_RESONANCE", "Resonance", CC, 101)));
+    dict.insert(std::make_pair("GLIDE_ON_OFF", new SynthParameter("GLIDE_ON_OFF", 65)));
+    dict.insert(std::make_pair("OSC1_WAVE", new SynthParameter("OSC1_WAVE", 9)));
+    dict.insert(std::make_pair("OSC1_OCTAVE", new SynthParameter("OSC1_OCTAVE", 74)));
+    dict.insert(std::make_pair("SYNC", new SynthParameter("SYNC", 77)));
+    dict.insert(std::make_pair("OSC2_WAVE", new SynthParameter("OSC2_WAVE", 11)));
+    dict.insert(std::make_pair("OSC2_OCTAVE", new SynthParameter("OSC2_WAVE", 75)));
+    dict.insert(std::make_pair("GLIDE_RATE", new SynthParameter("GLIDE_RATE", 5)));
+    dict.insert(std::make_pair("OSC2_FREQ", new SynthParameter("OSC2_FREQ", 10)));
+    dict.insert(std::make_pair("FILTER_MOD_SOURCE5", new SynthParameter("FILTER_MOD_SOURCE5", 104)));
+    dict.insert(std::make_pair("MOD_DEST2", new SynthParameter("MOD_DEST2", 106)));
+    dict.insert(std::make_pair("OSC1_LEVEL", new SynthParameter("OSC1_LEVEL", 15)));
+    dict.insert(std::make_pair("OSC2_LEVEL", new SynthParameter("OSC2_LEVEL", 16)));
+    dict.insert(std::make_pair("OVERDRIVE", new SynthParameter("OVERDRIVE", 18)));
+    dict.insert(std::make_pair("FILTER_POLES", new SynthParameter("FILTER_POLES", 109)));
+    dict.insert(std::make_pair("MOD_AMOUNT", new SynthParameter("MOD_AMOUNT", 6)));
+    dict.insert(std::make_pair("MOD_DESTINATION", new SynthParameter("MOD_DESTINATION", 69)));
+    dict.insert(std::make_pair("LPF_CUTOFF", new SynthParameter("LPF_CUTOFF", 19)));
+    dict.insert(std::make_pair("LPF_RESONANCE", new SynthParameter("LPF_RESONANCE", 21)));
+    dict.insert(std::make_pair("LPF_KB_AMOUNT", new SynthParameter("LPF_KB_AMOUNT", 22)));
+    dict.insert(std::make_pair("LPF_EG_AMOUNT", new SynthParameter("LPF_EG_AMOUNT", 27)));
+    dict.insert(std::make_pair("MOD_SOURCE", new SynthParameter("MOD_SOURCE", 68)));
+    dict.insert(std::make_pair("MOD_LFO_RATE", new SynthParameter("MOD_LFO_RATE", 3)));
+    dict.insert(std::make_pair("FILTER_EG_DECAY", new SynthParameter("FILTER_EG_DECAY", 24)));
+    dict.insert(std::make_pair("FILTER_EG_SUSTAIN", new SynthParameter("FILTER_EG_SUSTAIN", 25)));
+    dict.insert(std::make_pair("FILTER_EG_RELEASE", new SynthParameter("FILTER_EG_RELEASE", 26)));
+    dict.insert(std::make_pair("FILTER_EG_ATTACK", new SynthParameter("FILTER_EG_ATTACK", 23)));
+    dict.insert(std::make_pair("EG_ATTACK", new SynthParameter("EG_ATTACK", 28)));
+    dict.insert(std::make_pair("EG_DECAY", new SynthParameter("EG_DECAY", 29)));
+    dict.insert(std::make_pair("EG_SUSTAIN", new SynthParameter("EG_SUSTAIN", 30)));
+    dict.insert(std::make_pair("EG_RELEASE", new SynthParameter("EG_RELEASE", 31)));
 
     return dict;
 }

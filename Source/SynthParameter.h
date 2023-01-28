@@ -16,10 +16,9 @@
 class SynthParameter
 {
 public:
-    SynthParameter(juce::String id, juce::String name, MidiParameterType type, int ccNumber);
+    SynthParameter(juce::String id, int ccNumber);
     juce::String id;
-    juce::String name;
-    MidiParameterType type;
+    MidiParameterType type = CC;
     int ccNumber;
     int minValue = 0;
     int maxValue = 128;
