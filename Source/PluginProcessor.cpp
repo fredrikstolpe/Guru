@@ -189,8 +189,18 @@ void Guru2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::
 
 void Guru2AudioProcessor::parameterChanged(const juce::String & parameterID, float newValue)
 {
-    int x = static_cast<int>(newValue);
-    lastValue = parameterID + " : " + std::to_string(x) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
+    int ccValue = static_cast<int>(newValue);
+    lastValue = parameterID + " : " + std::to_string(ccValue) + " : " + std::to_string(parameterDict[parameterID]->ccNumber);
+    auto message = juce::MidiMessage::controllerEvent(1, parameterDict[parameterID]->ccNumber, (juce::uint8)ccValue);
+    //message.setTimeStamp(juce::Time::getMillisecondCounterHiRes() * 0.001 - startTime);
+    addMessageToBuffer(message);
+}
+
+void Guru2AudioProcessor::addMessageToBuffer(const juce::MidiMessage& message)
+{
+    auto timestamp = message.getTimeStamp();
+    auto sampleNumber = (int)(timestamp * sampleRate);
+    midiBuffer.addEvent(message, sampleNumber);
 }
 
 //==============================================================================

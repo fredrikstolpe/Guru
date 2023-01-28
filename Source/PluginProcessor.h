@@ -34,6 +34,7 @@ public:
    #endif
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
+    void addMessageToBuffer(const juce::MidiMessage& message);
 
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
@@ -70,6 +71,11 @@ public:
 
 private:
     std::map<juce::String, SynthParameter*> createParameterDict();
+
+    juce::MidiBuffer midiBuffer;
+    double sampleRate = 44100.0;
+    int previousSampleNumber = 0;
+
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Guru2AudioProcessor)
 };
